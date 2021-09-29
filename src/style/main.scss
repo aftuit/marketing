@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    body{
+        .btn{
+            &:focus{
+                box-shadow: none;
+            }
+            &:active{
+                box-shadow: none;
+            }
+        }
+        .row{
+            .col-3{
+                padding: 5px;
+                font-size: 12px;
+            }
+        }
+        .product-manager{
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            .info-box{
+                height: 100%;
+                .left-box{
+                    // background-color: #efefef;
+                    height: 100%;
+                    width: 40%;
+                    .card{
+                        box-shadow: -2px 2px 2px rgb(211, 210, 210);
+                        .card-footer{
+                            background: #fbfbfb;
+                        }
+                    }
+                }
+                .right-box{
+                    width: 60%;
+                    overflow-y: auto;
+                    .count-group{
+                       button{
+                        padding: 2px 10px;
+                        background: transparent;
+                        border: 1px solid grey;
+                        border-radius: 4px;
+                        margin: 0 2px;
+                        transition: all .1s linear;
+                        &:active{
+                            background-color: #EFEFEF;
+                        }
+                       }
+                       input{
+                        outline: none;
+                        border: 1px solid grey;
+                        border-radius: 4px;
+                        padding: 0 5px;
+                        width: 40%;
+                        font-size: 14px;
+                        &::-webkit-inner-spin-button{
+                            -webkit-appearance: none;
+                        }
+                       }
+                    }
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .info-wrap{
+                        margin: 0;
+                        position: relative;
+                        button.btn{
+                            padding: 5px 10px;
+                            line-height: initial;
+                        }
+                        .common-price{
+                            position: absolute;
+                            bottom: 0;
+                            width: 100%;
+                            }
+                        }
+                    }
+                    
+                }
+
+            }
+        }
+
+    }
