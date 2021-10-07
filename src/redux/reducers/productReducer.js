@@ -2,7 +2,14 @@ import {PRODUCT_SELL} from "../const"
 const initialState = {
     products: [],
     productInfos: [],
-    selectedItem: ""
+    productsByStatus: [],
+    searchInProducts: [],
+    productsPrice: [0],
+    isSearching: false,
+    selectedItem: "",
+    selectedIndex: 0,
+    canvasMenu: false
+
 }
 
 export const productReducer = (state=initialState, action) => {

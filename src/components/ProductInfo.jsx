@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { updateState, getSaleProducts, getProductByQuantity, deleteItem } from "../redux/action/productAction";
+import { updateState, getSaleProducts, deleteItem } from "../redux/action/productAction";
 import { Modal, ModalBody, ModalFooter } from "reactstrap"
 
 const ProductInfo = (props) => {
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [numb, setNumb] = useState(0)
-    const toggle = () => setIsOpen(!isOpen)
+    const [isOpen, setIsOpen] = useState(false);
+    const [counts, setCounts] = useState(props.info.quantity);
+    const [isDelete, setIsDelete] = useState(false);
 
-    const getSelectedItem = (item) => {
-        props.updateState({ selectedItem: item })
+    const toggle = () => setIsOpen(!isOpen);
+
+    const getSelectedItem = (item_id) => {
+        props.updateState({ selectedItem: item_id })
         toggle();
     }
 
+    console.log(counts)
+
     const deleteSelectedItem = () => {
+        setIsDelete(true)
         props.deleteItem();
         setIsOpen(!isOpen)
     }
 
-    useEffect(() => {
-        props.getSaleProducts();
-    }, [])
-
-
+    if (counts < 0) {
+        setCounts(0)
+    }
 
     return (
-        <div className="info-wrap">
-
+        <>
             <Modal
                 toggle={toggle}
                 isOpen={isOpen}
@@ -44,79 +46,58 @@ const ProductInfo = (props) => {
                         className="btn btn-outline-danger"
                     >Ha
                     </button>
-
                     <button
                         onClick={toggle}
                         className="btn btn-outline-primary"
                     >Yo'q
                     </button>
-
                 </ModalFooter>
             </Modal>
+            <tr  key={props.info.id} className={`bg-white ${isDelete && ' remove'}`}>
+                <td>{props.index + 1}</td>
+                <td style={{width: '25%'}}>{props.info.product_name}</td>
+                <td style={{width: "30%"}}>
+                    <div className="count-group d-flex justify-content-center">
+                        <button
+                            type="button"
+                            onClick={() =>  setCounts(counts - 1)}
+                        >-</button>
+                        <input
+                            className="text-center"
+                            key={props.info.id}
+                            type="number"
+                            onChange={(e) => setCounts(e.target.value)}
+                            value={counts > 0 && counts}
+                        />
 
-            <table className="table text-center table-striped table-hover table-borderless">
-                <tr>
-                    <th>№</th>
-                    <th>Nomi</th>
-                    <th>Soni</th>
-                    <th>Narxi</th>
-                    <th>Olib tashlash</th>
-                </tr>
-                {
-                    props.products?.map(product => {
-                        return (
-                            <tr key={product.id}>
-                                <td>{product.id}</td>
-                                {
-                                    props.productInfos.map(info =>
-                                        info.id === product.quantity &&
-                                        <>
-                                            <td>{info.name}</td>
-                                            <td>
-                                                <div className="count-group d-flex justify-content-center">
-                                                    <button onClick={() => setNumb(numb - 1)}>-</button>
-                                                    <input 
-                                                        type="number" 
-                                                        placeholder="mahsulot soni" 
-                                                        onChange={(e) => setNumb(e.target.value)}   
-                                                        value={numb > 0 && numb} 
-                                                    />
-                                                    <button onClick={() => setNumb(parseInt(numb + 1))}>+</button>
-                                                </div>
-                                            </td>
-                                            <td>{numb > 0 && info.price * numb}</td>
-                                        </>
-                                    )
-                                }
-                                <td>
-                                    <button
-                                        onClick={() => getSelectedItem(product.id)}
-                                        type="button"
-                                        className="btn btn-outline-danger ml-auto d-block "
-                                    >
-                                        &times;
-                                    </button>
-                                </td>
-                            </tr>
-                        )
-                    })
-                }
-            </table>
-            <div className="common-price d-flex justify-content-between p-3 border">
-                <span className="d-block">Jami narx:</span>
-                <span className="d-block">{1200.00} so'm</span>
-            </div>
-        </div>
+                        <button
+                            type="button"
+                            onClick={() =>  setCounts((+counts) + (+1))}
+                        >+</button>
+                    </div>
+                </td>
+
+                <td style={{width: "18%"}}>{counts > 0 && `${props.info.sold_price * counts}  so'm`} </td>
+                <td style={{width: "15%"}}>
+                    <button
+                        onClick={() => getSelectedItem(props.info.sale_product_id)}
+                        type="button"
+                        className="btn btn-outline-danger mx-auto d-block px-3"
+                    >
+                        &times;
+                    </button>
+                </td>
+            </tr>
+        </>
     );
 };
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
-        products: state.product.products,
-        productInfos: state.product.productInfos,
-        selectedItem: state.product.selectedItem
+        selectedItem: state.product.selectedItem,
+        productsPrice: state.product.productsPrice,
+        selectedIndex: state.product.selectedIndex
+       
     }
 }
-
-export default connect(mapStateToProps, { updateState, getSaleProducts, getProductByQuantity, deleteItem })(ProductInfo);
+export default connect(mapStateToProps, { updateState, getSaleProducts, deleteItem })(ProductInfo);
