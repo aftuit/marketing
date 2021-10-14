@@ -1,14 +1,21 @@
 import {PRODUCT_SELL} from "../const"
 const initialState = {
     products: [],
-    productInfos: [],
+    productInfos: null,
     productsByStatus: [],
     searchInProducts: [],
     productsPrice: [0],
     isSearching: false,
+    searchingValue: "",
     selectedItem: "",
     selectedIndex: 0,
-    canvasMenu: false
+    canvasMenu: false,
+    selectItems: [],
+    selectItem: false,
+    isDeleted: false,
+    isCalculate: false,
+    totalPriceArray: [],
+    totalPrice: "",
 
 }
 

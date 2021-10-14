@@ -10,6 +10,8 @@
     border: 1px solid rgb(180, 171, 171);
     z-index: 546;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    max-height: 540px;
+    overflow-y: auto;
 }
 .search-box .search-result-list .list-item{
     list-style-type: none;

@@ -6,73 +6,57 @@ import PrintIcon from '@material-ui/icons/Print';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import "../style/search-bar.css"
 import { connect } from 'react-redux';
-import { updateState, addSearchedProducts, getSaleProducts } from '../redux/action/productAction';
+import { updateState, addSearchedProducts, getSaleProducts, deleteItemsByGroup } from '../redux/action/productAction';
 
 const Navbar = (props) => {
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [searchValue, setSearchValue] = useState("")
-    
+
+
     const onFocus = useRef(null)
 
     const setSearch = () => {
-        setIsOpen(!isOpen);
+        props.updateState({ isSearching: !props.isSearching, searchingValue: "" });
         onFocus.current.focus();
-        setSearchValue("")
+        
     }
 
-    const getValues = (id) => {
-        props.addSearchedProducts(id);
-        setSearchValue("")
-    }
-
- 
 
     return (
         <div className="navigation-nav">
             <nav className="navbar bg-info">
                 <div className="left-side align-items-center d-flex">
-                    <button onClick={() => props.updateState({canvasMenu: !props.canvasMenu})} className="navbar-brand btn">
+                    <button onClick={() => props.updateState({ canvasMenu: !props.canvasMenu })} className="navbar-brand btn">
                         {
-                            props.canvasMenu ? <CloseIcon className="text-white"/>:
-                            <MenuIcon className="text-white" />
+                            props.canvasMenu ? <CloseIcon className="text-white" /> :
+                                <MenuIcon className="text-white" />
                         }
                     </button>
                     <Link to="/" className="navbar-link text-white mx-3">Продажа</Link>
                     <Link to="/" className="navbar-link text-white mx-3">Быстрые товары</Link>
-                    <div className={`search-box d-block ml-auto ${isOpen ? 'active' : ''}`}>
+                    <div className={`search-box d-block ml-auto ${props.isSearching ? 'active' : ''}`}>
 
                         <button href="#" className="search-btn" onClick={setSearch}><SearchIcon /></button>
-                        <input 
-                            ref={onFocus} 
-                            className="search-txt" 
-                            type="search" 
-                            value={searchValue} 
-                            placeholder="Qidiruv..." 
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            />
-                        {
-                            searchValue !== "" &&                      
-                        <ul className="flex-column search-result-list">
-                            {
-                                props.searchInProducts.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
-                                .map(product => {
-                                    return <li 
-                                    key={product.id} 
-                                    className="list-item"
-                                    onClick={() => getValues(product.id)}
-                                    >{product.name}</li>
-                                })
-                            }
-                        </ul>
-                        }
+                        <input
+                            ref={onFocus}
+                            className="search-txt"
+                            type="search"
+                            value={props.searchingValue}
+                            placeholder="Qidiruv..."
+                            onChange={(e) => props.updateState({ searchingValue: e.target.value })}
+                        />
                     </div>
                 </div>
                 <div className="right-side d-flex ml-auto">
-
-
+                    {
+                        props.selectItems.length > 0 &&
+                    <button type="button" className="btn" onClick={() => props.deleteItemsByGroup()} >
+                        <DeleteIcon className="text-danger" />
+                    </button>
+                    }
 
                     <button type="button" className="btn">
                         <InfoIcon className="text-white" />
@@ -96,7 +80,10 @@ const mapStateToProps = (state) => {
     return {
         searchInProducts: state.product.searchInProducts,
         canvasMenu: state.product.canvasMenu,
+        isSearching: state.product.isSearching,
+        searchingValue: state.product.searchingValue,
+        selectItems: state.product.selectItems,
     }
 }
 
-export default connect(mapStateToProps, {updateState, addSearchedProducts, getSaleProducts})(Navbar);
+export default connect(mapStateToProps, { updateState, addSearchedProducts, getSaleProducts, deleteItemsByGroup })(Navbar);
