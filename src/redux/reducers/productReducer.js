@@ -1,4 +1,4 @@
-import {PRODUCT_SELL} from "../const"
+import { PRODUCT_SELL } from "../const"
 const initialState = {
     products: [],
     productInfos: null,
@@ -10,7 +10,7 @@ const initialState = {
     selectedItem: "",
     selectedIndex: 0,
     canvasMenu: false,
-    selectItems: [],
+    // selectItems: [],
     selectItem: false,
     isDeleted: false,
     isCalculate: false,
@@ -19,8 +19,8 @@ const initialState = {
 
 }
 
-export const productReducer = (state=initialState, action) => {
-    if(action.type === PRODUCT_SELL){
+export const productReducer = (state = initialState, action) => {
+    if (action.type === PRODUCT_SELL) {
         return {
             ...state,
             ...action.payload

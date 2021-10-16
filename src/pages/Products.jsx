@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Navbar from '../components/Navbar';
 import ProductContent from '../components/ProductContent';
-import ProductInfo from '../components/ProductInfo';
 import Payment from '../components/Payment';
 import Loader from '../components/Loader';
-import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import LoopIcon from '@material-ui/icons/Loop';
 import { getSaleProducts, getProductsByStatus, updateState, updateSetCounts, deleteItem } from '../redux/action/productAction';
@@ -15,31 +14,6 @@ const Products = (props) => {
     const [soum, setSoum] = useState("0")
     const [result, setResult] = useState("")
 
-    const [isOpen, setIsOpen] = useState(false);
-    // const [counts, setCounts] = useState(props.info.quantity);
-    const [isDelete, setIsDelete] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
-    // ===============================================
-
-    const toggle = () => setIsOpen(!isOpen);
-
-    const getSelectedItem = (item_id) => {
-        props.updateState({ selectedItem: item_id })
-        toggle();
-    }
-
-
-
-    const deleteSelectedItem = () => {
-        setIsDelete(true)
-        props.deleteItem();
-        setIsOpen(!isOpen)
-    }
-
-    if (props.isDeleted) {
-        setIsChecked(false)
-    }
-    // ===============================================
     useEffect(() => {
         props.getSaleProducts();
         props.getProductsByStatus();
@@ -104,17 +78,17 @@ const Products = (props) => {
                             <ModalBody>
                                 <div className="text-end calculator w-100">
                                     {
-                                        result === ""?
-                                        <>
-                                            <span>Оплата наличными</span>
-                                            <input type="text" disabled className="form-control bg-transparent" value={props.totalPrice} />
-                                            <span>сумма списания</span>
-                                            <input type="text" disabled className="form-control bg-transparent" value={soum} />
-                                        </>:
-                                        <>
-                                        <span>Qaytim</span>
-                                        <input type="text" disabled className="form-control bg-transparent text-danger" value={result} />
-                                        </>
+                                        result === "" ?
+                                            <>
+                                                <span>Оплата наличными</span>
+                                                <input type="text" disabled className="form-control bg-transparent" value={props.totalPrice} />
+                                                <span>сумма списания</span>
+                                                <input type="text" disabled className="form-control bg-transparent" value={soum} />
+                                            </> :
+                                            <>
+                                                <span>Qaytim</span>
+                                                <input type="text" disabled className="form-control bg-transparent text-danger" value={result} />
+                                            </>
                                     }
                                     <div className="row row-buttons ">
                                         {
@@ -161,37 +135,13 @@ const Products = (props) => {
 
 
                 <div className="right-box border-left">
-                    {/* ============ */}
 
-                    <Modal
-                toggle={toggle}
-                isOpen={isOpen}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <ModalBody>
-                    <b>Ushbu mahsulotni o'chirmoqchimisiz?</b>
-                </ModalBody>
-                <ModalFooter>
-                    <button
-                        onClick={() => deleteSelectedItem()}
-                        className="btn btn-outline-danger"
-                    >Ha
-                    </button>
-                    <button
-                        onClick={toggle}
-                        className="btn btn-outline-primary"
-                    >Yo'q
-                    </button>
-                </ModalFooter>
-            </Modal>
-            {/* ================== */}
                     <div className="info-wrap">
                         <table className="table text-center  table-striped table-hover table-borderless">
                             <tbody>
                                 <tr className="bg-white">
                                     <th className="text-center">№</th>
-                       
+
                                     <th className="text-center">Nomi</th>
                                     <th className="text-center">Soni</th>
                                     <th className="text-center">Narxi</th>
@@ -224,7 +174,7 @@ const Products = (props) => {
 
                                                         <button
                                                             type="button"
-                                                            onClick={() => props.updateSetCounts( ((+info.quantity) + (+1)), info)}
+                                                            onClick={() => props.updateSetCounts(((+info.quantity) + (+1)), info)}
                                                         >+</button>
                                                     </div>
                                                 </td>
@@ -233,7 +183,7 @@ const Products = (props) => {
 
                                                 <td style={{ width: "15%" }}>
                                                     <button
-                                                        onClick={() => getSelectedItem(info.sale_product_id)}
+                                                        onClick={() => props.deleteItem(info.sale_product_id)}
                                                         type="button"
                                                         className="btn btn-outline-danger mx-auto d-block px-3"
                                                     >

@@ -14,30 +14,29 @@ export const getSaleProducts = () => (dispatch, getState) => {
         .then(res => {
             dispatch(updateState({ productInfos: res.data, totalPriceArray: [] }));
             res.data.forEach(a => {
-                dispatch(updateState({totalPriceArray: [...getState().product.totalPriceArray, a.sold_price * a.quantity]}))
+                dispatch(updateState({ totalPriceArray: [...getState().product.totalPriceArray, a.sold_price * a.quantity] }))
             })
-            dispatch(updateState({totalPrice: getState().product.totalPriceArray?.reduce((a, b) => a + b)}))
+            dispatch(updateState({ totalPrice: getState().product.totalPriceArray?.reduce((a, b) => a + b) }))
         })
 }
 
-export const deleteItem = () => (dispatch, getState) => {
-    axios.delete(API_URL + "sale-product/" + getState().product.selectedItem)
-        .then(res => {
-            dispatch(getSaleProducts());
-            console.log(getState().product.selectedItem)
-        })
+export const deleteItem = (id) => (dispatch, getState) => {
+    // axios.delete(API_URL + "sale-product/" + getState().product.selectedItem)
+    //     .then(res => {
+    //         dispatch(getSaleProducts());
+    //         console.log(getState().product.selectedItem)
+    //     })
+    dispatch(updateState({ productInfos: getState().product.productInfos.filter(info => info.sale_product_id !== id) }))
 }
 
-export const deleteItemsByGroup = () => (dispatch, getState) => {
-    axios.delete(API_URL + "sale-product/" + getState().product.selectItems.join(","))
-        .then(res => {
-            console.log(res)
-            dispatch(getSaleProducts())
-            dispatch(updateState({ selectItems: [] }))
-        })
-
-
-}
+// export const deleteItemsByGroup = () => (dispatch, getState) => {
+//     axios.delete(API_URL + "sale-product/" + getState().product.selectItems.join(","))
+//         .then(res => {
+//             console.log(res)
+//             dispatch(getSaleProducts())
+//             dispatch(updateState({ selectItems: [] }))
+//         })
+// }
 
 export const getProductsByStatus = () => (dispatch) => {
     axios.get(API_URL + "product-by-status")

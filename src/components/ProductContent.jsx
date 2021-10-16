@@ -77,7 +77,7 @@ const ProductContent = (props) => {
                                     </div>
                                 )
                             })
-                    } 
+                    }
 
 
 

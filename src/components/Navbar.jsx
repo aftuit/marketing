@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Link } from "react-router-dom"
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import "../style/search-bar.css"
 import { connect } from 'react-redux';
-import { updateState, addSearchedProducts, getSaleProducts, deleteItemsByGroup } from '../redux/action/productAction';
+import { updateState, addSearchedProducts, getSaleProducts } from '../redux/action/productAction';
 
 const Navbar = (props) => {
 
@@ -21,7 +21,7 @@ const Navbar = (props) => {
     const setSearch = () => {
         props.updateState({ isSearching: !props.isSearching, searchingValue: "" });
         onFocus.current.focus();
-        
+
     }
 
 
@@ -51,12 +51,12 @@ const Navbar = (props) => {
                     </div>
                 </div>
                 <div className="right-side d-flex ml-auto">
-                    {
+                    {/* {
                         props.selectItems.length > 0 &&
-                    <button type="button" className="btn" onClick={() => props.deleteItemsByGroup()} >
-                        <DeleteIcon className="text-danger" />
-                    </button>
-                    }
+                        <button type="button" className="btn" onClick={() => props.deleteItemsByGroup()} >
+                            <DeleteIcon className="text-danger" />
+                        </button>
+                    } */}
 
                     <button type="button" className="btn">
                         <InfoIcon className="text-white" />
@@ -86,4 +86,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { updateState, addSearchedProducts, getSaleProducts, deleteItemsByGroup })(Navbar);
+export default connect(mapStateToProps, { updateState, addSearchedProducts, getSaleProducts })(Navbar);
